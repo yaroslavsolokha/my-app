@@ -5,42 +5,47 @@ import TodoItem from './components/TodoItem'
 import './App.css';
 import todoData from './todoData'
 
-// function AppTodo() {
-//     const todoComponents = todoData.map(todo => <TodoItem key={todo.id} item={todo} />);
+class AppTodo extends React.Component {
+  constructor () {
+    super()
 
-//     return (
-//       <div>
-//         <Header />
-//         <div className="todo-list">
-//           {todoComponents}
-//         </div>
-//         <Footer />
-//       </div>
-//     )
-//   }
-
-  class AppTodo extends React.Component {
-    constructor () {
-      super()
-
-      this.state = {
-        todo: todoData
-      }
+    this.state = {
+      todo: todoData
     }
 
-    render () {
-      const todoComponents = this.state.todo.map(todo => <TodoItem key={todo.id} item={todo} />);
-
-      return (
-        <div>
-          <Header />
-          <div className="todo-list">
-            {todoComponents}
-          </div>
-          <Footer />
-        </div>
-      )
-    }
+    this.handleChanged = this.handleChanged.bind(this);
   }
 
-  export default AppTodo;
+  handleChanged(id) {
+    this.setState(prevState => {
+      const updatedTodos = prevState.todo.map(todo => {
+        if (todo.id === id) {
+          todo.completed = !todo.completed
+        }
+
+        return todo;
+      })
+
+      return {
+        todo: updatedTodos
+      }
+
+    })
+  }
+
+  render () {
+    const todoComponents = this.state.todo.map(todo => <TodoItem key={todo.id} item={todo} handleChanged={this.handleChanged} />);
+
+    return (
+      <div>
+        <Header />
+        <div className="todo-list">
+          {todoComponents}
+        </div>
+        <Footer />
+      </div>
+    )
+  }
+}
+
+export default AppTodo;
