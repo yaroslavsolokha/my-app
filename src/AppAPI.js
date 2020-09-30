@@ -32,20 +32,7 @@ class AppAPI extends React.Component {
   }
 
   handleChangeEmail(id) {
-    this.setState(prevState => {
-      const updatedCharacters = prevState.characters.map(item => {
-        if (item.id === id) {
-          item.completed = 'new'
-        }
-
-        return item;
-      })
-
-      return {
-        item: updatedCharacters
-      }
-
-    })
+    //todo add changing email
   }
 
   componentDidMount() {
