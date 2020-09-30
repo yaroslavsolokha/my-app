@@ -2,17 +2,19 @@ import React from 'react';
 import Header from './components/Header'
 import Footer from './components/Footer'
 import './App.css';
-import Conditional from './components/Conditional';
+import Item from './components/Item';
 
 class AppAPI extends React.Component {
   constructor() {
     super();
     this.state = {
-      isLoading: true,
-      isLoggedIn: false
+      isLoggedIn: false,
+      characters: []
     }
 
     this.handleClick = this.handleClick.bind(this);
+    this.handleRemove = this.handleRemove.bind(this);
+    this.handleChangeEmail = this.handleChangeEmail.bind(this);
   }
 
   handleClick() {
@@ -23,21 +25,47 @@ class AppAPI extends React.Component {
     })
   }
 
-  componentDidMount() {
-    setTimeout(() => {
-      this.setState({
-        isLoading: false
+  handleRemove(id) {
+    this.setState({
+      characters: this.state.characters.filter(item => item.id != id)
+    })
+  }
+
+  handleChangeEmail(id) {
+    this.setState(prevState => {
+      const updatedCharacters = prevState.characters.map(item => {
+        if (item.id === id) {
+          item.completed = 'new'
+        }
+
+        return item;
       })
-    }, 1500)
+
+      return {
+        item: updatedCharacters
+      }
+
+    })
+  }
+
+  componentDidMount() {
+    fetch("https://reqres.in/api/users?page=2").then(response => response.json()).then(data => {
+      this.setState({
+        characters: data.data
+      })
+    });
   }
 
   render() {
     let ButtonText = this.state.isLoggedIn ? 'Log OUT' : 'Log IN';
+ 
     return (
       <div>
         <Header />
         <button onClick={this.handleClick}>{ButtonText}</button>
-        {this.state.isLoading ? <h1>Waiting...</h1> : <Conditional isLoading={this.state.isLoading} />}
+        <ul>
+          {this.state.characters ? this.state.characters.map(item => <Item key={item.id} item={item} handleRemove={this.handleRemove} handleChangeEmail={this.handleChangeEmail} />) : <h1>Waiting...</h1>}
+        </ul>
         <Footer />
       </div>
     )

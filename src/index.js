@@ -8,6 +8,6 @@ import AppAPI from './AppAPI'
 
 
 ReactDOM.render(
-  <AppTodo />,
+  <AppAPI />,
   document.getElementById('root')
 );
