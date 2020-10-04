@@ -2,57 +2,68 @@ import React from 'react';
 import Header from './components/Header'
 import Footer from './components/Footer'
 import './App.css';
-import Item from './components/Item';
 
 class AppAPI extends React.Component {
   constructor() {
     super();
     this.state = {
-      isLoggedIn: false,
-      characters: []
+      firstName: '',
+      lastName: '',
+      gender: '',
+      description: '',
+      country: '',
+      isDeveloper: true
     }
 
-    this.handleClick = this.handleClick.bind(this);
-    this.handleRemove = this.handleRemove.bind(this);
-    this.handleChangeEmail = this.handleChangeEmail.bind(this);
+    this.handleChange = this.handleChange.bind(this)
   }
 
-  handleClick() {
-    this.setState(prevState => {
-      return {
-        isLoggedIn: !prevState.isLoggedIn
-      }
-    })
+
+  handleChange(event) {
+    const {name, value, type, checked} = event.target
+    type === "checkbox" ? this.setState({[name]: checked}) : this.setState({[name]: value})
   }
 
-  handleRemove(id) {
-    this.setState({
-      characters: this.state.characters.filter(item => item.id != id)
-    })
-  }
-
-  handleChangeEmail(id) {
-    //todo add changing email
-  }
-
-  componentDidMount() {
-    fetch("https://reqres.in/api/users?page=2").then(response => response.json()).then(data => {
-      this.setState({
-        characters: data.data
-      })
-    });
-  }
-
-  render() {
-    let ButtonText = this.state.isLoggedIn ? 'Log OUT' : 'Log IN';
- 
+  render() { 
     return (
       <div>
         <Header />
-        <button onClick={this.handleClick}>{ButtonText}</button>
-        <ul>
-          {this.state.characters ? this.state.characters.map(item => <Item key={item.id} item={item} handleRemove={this.handleRemove} handleChangeEmail={this.handleChangeEmail} />) : <h1>Waiting...</h1>}
-        </ul>
+        <form>
+          <input type="text" name="firstName" value={this.state.firstName} placeholder="First name" onChange={this.handleChange} />
+          <br />
+          <input type="text" name="lastName" value={this.state.lastName} placeholder="Last name" onChange={this.handleChange} />
+          <br />
+          <textarea name="description" value={this.state.description} placeholder="Description" onChange={this.handleChange} />
+          <br />
+          <label>
+            <input type="checkbox" name="isDeveloper" value={this.state.isDeveloper} checked={this.state.isDeveloper} onChange={this.handleChange} />
+            Is developer?
+          </label>
+          <br />
+          <label>
+            <input type="radio" name="gender" value="male" checked={this.state.gender === "male"} onChange={this.handleChange} />
+            Male
+          </label>
+          <br />
+          <label>
+            <input type="radio" name="gender" value="female" checked={this.state.gender === "female"} onChange={this.handleChange} />
+            Female
+          </label>
+
+          <br />
+
+          <select value={this.state.country} name="country" onChange={this.handleChange}>
+            <option>Please choose country</option>
+            <option value="ukraine">Ukraine</option>
+            <option value="cr">Czech Republic</option>
+          </select>
+
+          <h2>{this.state.firstName} {this.state.lastName}</h2>
+          <h3>{this.state.description}</h3>
+          <p>Developer: {this.state.isDeveloper === true ? "Yes": "No"}</p>
+          <p>Gender: {this.state.gender}</p>
+          <p>Country: {this.state.country}</p>
+        </form>
         <Footer />
       </div>
     )
