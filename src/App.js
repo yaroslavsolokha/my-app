@@ -1,17 +1,19 @@
 import React from 'react';
-import MainContent from './components/MainContent'
 import Header from './components/Header'
 import Footer from './components/Footer'
+import Form from './components/FormContainer'
 import './App.css';
 
-function App() {
+class App extends React.Component {
+  render() { 
     return (
       <div>
         <Header />
-        <MainContent />
+        <Form />
         <Footer />
       </div>
     )
   }
+}
 
-  export default App;
+export default App;
