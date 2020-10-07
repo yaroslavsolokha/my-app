@@ -1,17 +1,19 @@
 import React from 'react';
-import MainContent from './components/MainContent'
-import Header from './components/Header'
-import Footer from './components/Footer'
 import './App.css';
 
-function App() {
+class App extends React.Component {
+  state = {
+    name: "Yaroslav"
+  }
+
+
+  render() { 
     return (
       <div>
-        <Header />
-        <MainContent />
-        <Footer />
+        Just testing {this.state.name}
       </div>
     )
   }
+}
 
-  export default App;
+export default App;
